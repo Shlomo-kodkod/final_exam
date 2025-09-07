@@ -6,12 +6,12 @@ from services.utils.utils import setup_logger
 class Fetcher:
     def __init__(self):
         self.__logger = setup_logger("Fetcher")
-    def time_convert(self, time: float) -> datetime:
+    def time_convert(self, time: float) -> str:
         """
-        Convert time from float to datetime.
+        Convert timestamp from float to str.
         """
         newtime = datetime.fromtimestamp(time)
-        return newtime
+        return str(newtime)
     
     def size_format(self, size: int) -> str:
         """

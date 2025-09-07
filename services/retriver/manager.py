@@ -24,8 +24,4 @@ class Manager:
         data = self.__fetcher.create_file_records(config.DATA_PATH)
         self.publish_data(data, config.KAFKA_TOPIC, config.KAFKA_KEY)
 
-if __name__ == "__main__":
-    test = Manager()
-    test.main()
-
 
