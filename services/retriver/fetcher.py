@@ -49,8 +49,4 @@ class Fetcher:
             except Exception as e:
                 self.__logger.error(f"Failed to find metadata for {name}: {e}")
         return result
-    
-a = Fetcher()
-a.create_file_records("podcasts")
-
-
+ 
