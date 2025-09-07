@@ -1,0 +1,65 @@
+# --- Python bytecode ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Logs and temp files ---
+*.log
+*.tmp
+*.bak
+*.swp
+pip-log.txt
+
+# --- Virtual environments ---
+venv/
+.venv/
+ENV/
+env/
+.env/
+
+# --- Environment variables / Secrets ---
+.env
+.env.*
+*.secret
+
+# --- Packaging ---
+*.egg
+*.egg-info/
+.eggs/
+dist/
+build/
+
+# --- IDEs and Editors ---
+.vscode/
+.idea/
+
+# --- Testing and Coverage ---
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+.cache/
+nosetests.xml
+test-results/
+
+# --- Static analysis ---
+.mypy_cache/
+.pyre/
+.pytype/
+
+# --- System files ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- Jupyter Notebooks ---
+.ipynb_checkpoints
+
+# --- PEP 582 ---
+__pypackages__/
+
+# --- Local Databases ---
+*.sqlite3
+*.db
