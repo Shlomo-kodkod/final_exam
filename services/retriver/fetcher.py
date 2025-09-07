@@ -1,8 +1,11 @@
 from pathlib import Path
 import os.path
 from datetime import datetime
+from services.utils.utils import setup_logger
 
 class Fetcher:
+    def __init__(self):
+        self.__logger = setup_logger("Fetcher")
     def time_convert(self, time: float) -> datetime:
         """
         Convert time from float to datetime.
@@ -10,20 +13,19 @@ class Fetcher:
         newtime = datetime.fromtimestamp(time)
         return newtime
     
-    def size_format(self, size: int):
+    def size_format(self, size: int) -> str:
         """
         Convert file size from int to string.
         """
         newform = format(size/1024, ".2f")
         return newform + " KB"
 
-    def get_meta_data(self, file_path):
+    def get_meta_data(self, file_path) -> dict:
         """
         Return file metadata.
         """
         stats = os.stat(file_path)
         abs_path = os.path.abspath(file_path)
-        print(stats.st_size)
         attrs = {
             'File Path': abs_path, 
             'File Name': Path(file_path).name,
@@ -33,15 +35,22 @@ class Fetcher:
             'Last Access Date': self.time_convert(stats.st_atime)}
         return attrs
 
-    def create_file_records(self, dir_path):
+    def create_file_records(self, dir_path) -> list[dict]:
         """
         Create a dict with metadata for all files in the given directory.
         """
         result = list()
         for name in os.listdir(dir_path): 
-            file_path = os.path.join(dir_path, name)
-            meta_data = self.get_meta_data(file_path)
-            result.append(meta_data)
+            try:
+                file_path = os.path.join(dir_path, name)
+                meta_data = self.get_meta_data(file_path)
+                result.append(meta_data)
+                self.__logger.info(f"Successfully add metadata for {name}")
+            except Exception as e:
+                self.__logger.error(f"Failed to find metadata for {name}: {e}")
         return result
+    
+a = Fetcher()
+a.create_file_records("podcasts")
 
 
