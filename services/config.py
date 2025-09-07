@@ -8,4 +8,15 @@ DATA_PATH = "podcasts"
 ES_HOST = os.getenv("ES_HOST", "localhost")
 ES_PORT = os.getenv("ES_PORT", 9200)
 ES_INDEX = os.getenv("ES_INDEX", "podcast_metadata")
+MONGO_PROTOCOL = os.getenv("MONGO_PROTOCOL", "mongodb")
+MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
+MONGO_PORT=int(os.getenv("MONGO_PORT", 27017))
+MONGO_INITDB_DATABASE = os.getenv("MONGO_INITDB_DATABASE", "podcast")
+MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "podcast")
+MONGO_URI = f"{MONGO_PROTOCOL}://{MONGO_HOST}:{MONGO_PORT}/"
+ES_URI = f"http://{ES_HOST}:{ES_PORT}"
+
+ES_MAPPING = {
+
+}
 
