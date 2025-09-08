@@ -38,7 +38,7 @@ class KafkaConsumer:
 
             try:
                 value = json.loads(message.value().decode('utf-8')) if message.value() else None
-                process_message(message.topic(), value)
+                process_message(value)
                 self.__logger.info(f"Received message from topic {message.topic()}")
             except Exception as e:
                 self.__logger.error(f"Error while receiving message: {e}")

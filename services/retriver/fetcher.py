@@ -13,6 +13,8 @@ class Fetcher:
         """
         newtime = datetime.fromtimestamp(time).date()
         return str(newtime)
+
+        
     
     def size_format(self, size: int) -> float:
         """
