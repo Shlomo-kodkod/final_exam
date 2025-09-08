@@ -8,6 +8,7 @@ DATA_PATH = "podcasts"
 ES_HOST = os.getenv("ES_HOST", "localhost")
 ES_PORT = os.getenv("ES_PORT", 9200)
 ES_INDEX = os.getenv("ES_INDEX", "podcast_metadata")
+ES_LOG_INDEX = os.getenv("ES_LOG_INDEX", "logger")
 MONGO_PROTOCOL = os.getenv("MONGO_PROTOCOL", "mongodb")
 MONGO_HOST = os.getenv("MONGO_HOST", "localhost")
 MONGO_PORT=int(os.getenv("MONGO_PORT", 27017))
@@ -21,8 +22,17 @@ ES_MAPPING = {
         "File Path": {"type": "keyword"},
         "File Name": {"type": "keyword"},
         "Size (KB)": {"type": "float"},
-        "Creation Date": {"type": "text"},
-        "Modified Date": {"type": "text"},
-        "Last Access Date": {"type": "text"}
+        "Creation Date": {
+            "type": "date",
+            "format": "yyyy-MM-dd'T'HH:mm:ss"
+                          },
+        "Modified Date": {
+            "type": "text",
+             "format": "yyyy-MM-dd'T'HH:mm:ss"
+            },
+        "Last Access Date": {
+            "type": "text",
+             "format": "yyyy-MM-dd'T'HH:mm:ss"
+            }
     }
 }
