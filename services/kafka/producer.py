@@ -1,11 +1,11 @@
 import json
 from confluent_kafka import Producer
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 
 class KafkaProducer:
     def __init__(self, bootstrap_servers: str):
-        self.__logger = setup_logger("KafkaProducer")
+        self.__logger = Logger.get_logger("KafkaProducer")
         try:
             config = {'bootstrap.servers': bootstrap_servers}
             self.__producer = Producer(config)

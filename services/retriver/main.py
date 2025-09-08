@@ -1,8 +1,8 @@
-from services.retriver.manager import Manager
+from services.retriver.manager import FetcherManager
 
 
 def run():
-    manager = Manager()
+    manager = FetcherManager()
     manager.main()
 
 if __name__ == "__main__":

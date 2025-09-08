@@ -1,24 +1,25 @@
 from pathlib import Path
 import os.path
 from datetime import datetime
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 class Fetcher:
     def __init__(self):
-        self.__logger = setup_logger("Fetcher")
-    def time_convert(self, time: float) -> datetime:
+        self.__logger = Logger.get_logger("Fetcher")
+
+    def time_convert(self, time: float) -> str:
         """
-        Convert time from float to datetime.
+        Convert timestamp from float to str in iso format.
         """
-        newtime = datetime.fromtimestamp(time)
-        return newtime
+        newtime = datetime.fromtimestamp(time).date()
+        return str(newtime)
     
-    def size_format(self, size: int) -> str:
+    def size_format(self, size: int) -> float:
         """
-        Convert file size from int to string.
+        Convert file size to KB size.
         """
-        newform = format(size/1024, ".2f")
-        return newform + " KB"
+        newform = round(size / 1024, 2)
+        return newform 
 
     def get_meta_data(self, file_path) -> dict:
         """
