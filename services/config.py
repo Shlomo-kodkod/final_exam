@@ -17,6 +17,21 @@ MONGO_URI = f"{MONGO_PROTOCOL}://{MONGO_HOST}:{MONGO_PORT}/"
 ES_URI = f"http://{ES_HOST}:{ES_PORT}"
 
 ES_MAPPING = {
-
+    "properties": {
+        "File Path": {"type": "keyword"},
+        "File Name": {"type": "keyword"},
+        "Size (KB)": {"type": "float"},
+        "Creation Date": {
+            "type": "date",
+            "format": "yyyyMMdd'T'HHmmssZ"
+            },
+        "Modified Date": {
+            "type": "date",
+            "format": "yyyyMMdd'T'HHmmssZ"
+            },
+        "Last Access Date": {
+            "type": "date",
+            "format": "yyyyMMdd'T'HHmmssZ"
+        }
+    }
 }
-
