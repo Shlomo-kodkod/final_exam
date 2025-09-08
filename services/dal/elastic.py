@@ -1,6 +1,6 @@
 from elasticsearch import Elasticsearch , helpers
 from services.utils.utils import Logger
-
+from services import config
 
 class Elastic:
     def __init__(self, uri):
@@ -45,18 +45,15 @@ class Elastic:
             raise e
         
         
-    def search(self, index_name: str, query: dict = {"query": {"match_all": {}}}, score: bool = False) -> list:
+    def search(self, index_name: str, query: dict, hits: bool = True) -> list:
         """
         Searches for documents in elasticsearch index.
         """
         try:
-            result = helpers.scan(client=self.__connection, index=index_name, query=query)
-            docs = [document["_source"] for document in result] if score else [document for document in result]
+            result = self.__connection.search(index=index_name, query=query)
             self.__logger.info(f"Successfully search in {index_name}")
-            return docs 
+            return result['hits']['hits'] if hits else result
         except Exception as e:
             self.__logger.error(f"Failed to search in {index_name}: {e}")
             raise e
-            
-                         
 

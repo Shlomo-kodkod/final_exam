@@ -26,6 +26,9 @@ class FetcherManager:
             self.__logger.error(f"Failed to publish data to topic {topic}: {e}")
 
     def main(self):
+        """
+        Start extracting files metadata and publish them to kafka.
+        """
         data = self.__fetcher.create_file_records(config.DATA_PATH)
         self.publish_data(data, config.KAFKA_TOPIC, config.KAFKA_KEY)
 
