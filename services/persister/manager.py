@@ -1,5 +1,5 @@
 from services.dal.elastic import Elastic
-from services.dal.mongo import DAL
+from services.dal.mongo import Mongo
 from services.utils.utils import setup_logger
 from services.persister.persister import Persister
 from services import config
@@ -11,7 +11,7 @@ class Manager:
         self.__elastic = Elastic(config.ES_URI)
         self.__elastic.connect()
         self.__elastic.create_index(config.ES_INDEX, config.ES_MAPPING)
-        self.__mongo = DAL(config.MONGO_URI)
+        self.__mongo = Mongo(config.MONGO_URI)
         self.__mongo.connect(config.MONGO_INITDB_DATABASE)
 
     def upload_data_dict(self, file_id: str, file_data: bytes):

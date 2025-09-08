@@ -2,7 +2,7 @@ from pymongo import MongoClient
 from services.utils.utils import setup_logger
 
 
-class DAL:
+class Mongo:
     _instance = None
     _initialized = False
 
@@ -12,13 +12,13 @@ class DAL:
         return cls._instance
 
     def __init__(self, uri):
-        if DAL._initialized:
+        if Mongo._initialized:
             return
         self.__logger = setup_logger("DAL")
         self.__uri = uri
         self.__client = None
         self.__db = None
-        DAL._initialized = True
+        Mongo._initialized = True
 
     def connect(self, db: str):
         """

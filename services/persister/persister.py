@@ -1,4 +1,4 @@
-import uuid
+import hashlib
 from services.utils.utils import setup_logger
 
 class Persister:
@@ -6,16 +6,15 @@ class Persister:
         self.__logger = setup_logger("Persister")
 
 
-    def create_file_uid(self, meta_data: dict, id_parm: list) -> str:
-        "Create unique id based on metadata or with uuid"
+    def create_file_uid(self, file_bytes: bytes) -> str:
+        "Create unique id based on file data with hash"
         try:
-            uid = "".join([meta_data[parm] for parm in id_parm])
-            uid = uid.strip()
-            self.__logger.info("Successfully created file id")
-            return uid if len(uid) > 10 else str(uuid.uuid4())
+            uid = hashlib.sha256(file_bytes).hexdigest()
+            self.__logger.info("Successfully create file unique id")
+            return uid
         except Exception as e:
             self.__logger.error(f"Failed to create file id: {e}")
-            return str(uuid.uuid4())
+            raise
     
     
     def convert_audio_to_bin(self, file_path) -> bytes:
