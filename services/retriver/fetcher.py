@@ -1,11 +1,11 @@
 from pathlib import Path
 import os.path
 from datetime import datetime
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 class Fetcher:
     def __init__(self):
-        self.__logger = setup_logger("Fetcher")
+        self.__logger = Logger.get_logger("Fetcher")
 
     def time_convert(self, time: float) -> str:
         """

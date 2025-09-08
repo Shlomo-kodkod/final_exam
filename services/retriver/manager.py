@@ -1,11 +1,11 @@
 from services.kafka.producer import KafkaProducer
 from services.retriver.fetcher import Fetcher
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 from services import config
 
 class FetcherManager:
     def __init__(self):
-        self.__logger = setup_logger("FetcherManager")
+        self.__logger = Logger.get_logger("FetcherManager")
         self.__fetcher = Fetcher()
         try:
             self.__producer = KafkaProducer(config.BOOTSTRAP_SERVER)

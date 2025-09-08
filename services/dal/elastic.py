@@ -1,12 +1,12 @@
 from elasticsearch import Elasticsearch , helpers
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 
 class Elastic:
     def __init__(self, uri):
         self.__uri = uri
         self.__connection = None 
-        self.__logger = setup_logger("Elastic")
+        self.__logger = Logger.get_logger("Elastic")
 
     def connect(self):
         """

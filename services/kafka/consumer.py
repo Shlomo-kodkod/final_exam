@@ -1,11 +1,11 @@
 import json
 from confluent_kafka import Consumer
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 
 class KafkaConsumer:
     def __init__(self, bootstrap_servers: str, group_id: str, topics: list, auto_offset_reset='earliest'):
-        self.__logger = setup_logger("KafkaConsumer")
+        self.__logger = Logger.get_logger("KafkaConsumer")
         try:
             conf = {
                 'bootstrap.servers': bootstrap_servers,

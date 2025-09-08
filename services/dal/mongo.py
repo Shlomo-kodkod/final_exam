@@ -1,11 +1,10 @@
 from pymongo import MongoClient
 import gridfs
-from services.utils.utils import setup_logger
-
+from services.utils.utils import Logger
 
 class Mongo:
     def __init__(self, uri):
-        self.__logger = setup_logger("Mongo")
+        self.__logger = Logger.get_logger("Mongo")
         self.__uri = uri
         self.__client = None
         self.__db = None

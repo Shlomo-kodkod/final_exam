@@ -1,14 +1,14 @@
 from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo
 from services.kafka.consumer import KafkaConsumer
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 from services.persister.persister import Persister
 from services import config
 
 
 class PersisterManager:
     def __init__(self):
-        self.__logger = setup_logger("Persister - Manager")
+        self.__logger = Logger.get_logger("Persister - Manager")
         self.__elastic = Elastic(config.ES_URI)
         self.__mongo = Mongo(config.MONGO_URI)
         self.__persister = Persister()
@@ -29,7 +29,7 @@ class PersisterManager:
         try:
             metadata["file_id"] = file_id
             self.__elastic.index(config.ES_INDEX, metadata)
-            
+
             self.__logger.info("Successfully index data to elastic")
         except Exception as e:
             self.__logger.error("Failed to index data to elastic")

@@ -1,9 +1,9 @@
 import hashlib
-from services.utils.utils import setup_logger
+from services.utils.utils import Logger
 
 class Persister:
     def __init__(self):
-        self.__logger = setup_logger("Persister")
+        self.__logger = Logger.get_logger("Persister")
 
 
     def create_file_uid(self, file_bytes: bytes) -> str:
