@@ -4,23 +4,12 @@ from services.utils.utils import setup_logger
 
 
 class Mongo:
-    _instance = None
-    _initialized = False
-
-    def __new__(cls):
-        if cls._instance is None:
-            cls._instance = super().__new__(cls)
-        return cls._instance
-
     def __init__(self, uri):
-        if Mongo._initialized:
-            return
-        self.__logger = setup_logger("DAL")
+        self.__logger = setup_logger("Mongo")
         self.__uri = uri
         self.__client = None
         self.__db = None
         self.__fs = None
-        Mongo._initialized = True
 
     def connect(self, db: str):
         """

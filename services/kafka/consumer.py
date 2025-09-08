@@ -4,7 +4,7 @@ from services.utils.utils import setup_logger
 
 
 class KafkaConsumer:
-    def __init__(self, bootstrap_servers: str, group_id: str, topic: str, auto_offset_reset='earliest'):
+    def __init__(self, bootstrap_servers: str, group_id: str, topics: list, auto_offset_reset='earliest'):
         self.__logger = setup_logger("KafkaConsumer")
         try:
             conf = {
@@ -14,8 +14,8 @@ class KafkaConsumer:
                 'enable.auto.commit': True
             }
             self.consumer = Consumer(conf)
-            self.consumer.subscribe(topic)
-            self.__logger.info(f"Kafka Consumer initialized on topics {topic}, group_id {group_id}")
+            self.consumer.subscribe(topics)
+            self.__logger.info(f"Kafka Consumer initialized on topics {topics}, group_id {group_id}")
         except Exception as e:
             self.__logger.error(f"Failed to create consumer: {e}")
             raise
