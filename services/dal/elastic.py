@@ -13,11 +13,7 @@ class Elastic:
         Connect to elasticsearch server.
         """
         try:
-<<<<<<< HEAD
             self.__connection = Elasticsearch([self.__uri])
-=======
-            self.__connection = Elasticsearch([self.__uri], verify_certs=True)
->>>>>>> f79dfeb937f234e1f45b6a0155e92848ad7f61f6
             if self.__connection.ping():
                 self.__logger.info("Successfully connected to Elasticsearch")
             else:
