@@ -28,11 +28,11 @@ class PersisterManager:
         """
         try:
             metadata["file_id"] = file_id
-            data = [metadata]
-            self.__elastic.index(config.ES_INDEX, data)
+            self.__elastic.index(config.ES_INDEX, metadata)
+            
             self.__logger.info("Successfully index data to elastic")
         except Exception as e:
-            self.__logger.info("Failed to index data to elastic")
+            self.__logger.error("Failed to index data to elastic")
 
     def process_message(self, topic: str, message: dict, path_filed: str = "File Path"):
         """
@@ -55,10 +55,7 @@ class PersisterManager:
             self.__logger.error(f"Failed to consume messages: {e} ")
 
 
-        
-a = PersisterManager()
-a.main()
-    
+
 
    
         

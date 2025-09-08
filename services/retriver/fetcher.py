@@ -11,7 +11,7 @@ class Fetcher:
         """
         Convert timestamp from float to str in iso format.
         """
-        newtime = datetime.fromtimestamp(time).isoformat()
+        newtime = datetime.fromtimestamp(time).date()
         return str(newtime)
     
     def size_format(self, size: int) -> float:

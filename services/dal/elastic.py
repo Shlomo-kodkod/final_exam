@@ -13,7 +13,7 @@ class Elastic:
         Connect to elasticsearch server.
         """
         try:
-            self.__connection = Elasticsearch([self.__uri])
+            self.__connection = Elasticsearch([self.__uri], verify_certs=True)
             if self.__connection.ping():
                 self.__logger.info("Successfully connected to Elasticsearch")
             else:
@@ -33,14 +33,13 @@ class Elastic:
             self.__logger.warning(f"Index {index_name} already exists")
             
         
-    def index(self, index_name: str, data: list[dict]):
+    def index(self, index_name: str, data: dict):
         """
         Indexing documents into elasticsearch.
         """
         try:
-            actions = [{"_index": index_name, "_source": doc} for doc in data]
-            helpers.bulk(client=self.__connection, actions=actions)
-            self.__logger.info(f"Successfully indexed {len(actions)} documents in {index_name}")
+            self.__connection.index(index=index_name, body=data)
+            self.__logger.info(f"Successfully indexed document in {index_name}")
         except Exception as e:
             self.__logger.error(f"Failed to index data in {index_name}: {e}")
             raise e
@@ -61,5 +60,3 @@ class Elastic:
             
                          
 
-
-    

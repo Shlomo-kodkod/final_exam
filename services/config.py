@@ -21,17 +21,8 @@ ES_MAPPING = {
         "File Path": {"type": "keyword"},
         "File Name": {"type": "keyword"},
         "Size (KB)": {"type": "float"},
-        "Creation Date": {
-            "type": "date",
-            "format": "yyyyMMdd'T'HHmmssZ"
-            },
-        "Modified Date": {
-            "type": "date",
-            "format": "yyyyMMdd'T'HHmmssZ"
-            },
-        "Last Access Date": {
-            "type": "date",
-            "format": "yyyyMMdd'T'HHmmssZ"
-        }
+        "Creation Date": {"type": "text"},
+        "Modified Date": {"type": "text"},
+        "Last Access Date": {"type": "text"}
     }
 }
