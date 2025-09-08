@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+import gridfs
 from services.utils.utils import setup_logger
 
 
@@ -6,7 +7,7 @@ class Mongo:
     _instance = None
     _initialized = False
 
-    def __new__(cls, uri):
+    def __new__(cls):
         if cls._instance is None:
             cls._instance = super().__new__(cls)
         return cls._instance
@@ -18,6 +19,7 @@ class Mongo:
         self.__uri = uri
         self.__client = None
         self.__db = None
+        self.__fs = None
         Mongo._initialized = True
 
     def connect(self, db: str):
@@ -31,6 +33,7 @@ class Mongo:
             uri = self.__uri
             self.__client = MongoClient(uri)
             self.__db = self.__client[db]
+            self.__fs = gridfs.GridFS(self.__db)
             self.__logger.info(f"Connected to MongoDB database: {db}")
         except Exception as e:
             self.__logger.error(f"Failed to connect to MongoDB: {e}")
@@ -44,32 +47,46 @@ class Mongo:
             self.__client.close()
             self.__logger.info("Database connection closed")
 
-    def read_collection(self, collection_name: str, query: list[dict] = None):
+
+    def insert_file(self, file_id: str, file_data: bytes):
         """
-        Read a collection from the MongoDB database.
+        Insert a file into the mongodb with id.
         """
-        if query is None:
-            query = []
-        try:
-            collection = self.__db[collection_name]
-            data = list(collection.aggregate(query))
-            self.__logger.info(f"Data loaded successfully from: {collection_name}")
-            return data
+        try: 
+            id = self.__fs.put(data=file_data, files_id= file_id)
+            self.__logger.info(f"File inserted successfully with file_id: {file_id}")
         except Exception as e:
-            self.__logger.error(f"Failed to retrieve collection : {e}")
-            raise e
-        
-    def create_document(self, collection_name: str, data: dict | list[dict], many: bool = False):
+            self.__logger.error(f"Failed to insert file {id}: {file_id}")
+            raise
+
+    def find_file(self, file_id: str) -> bytes | None:
         """
-        Create a document and insert into the mongodb collection.
+        Read a file from the MongoDB database based on file id.
         """
         try:
-            collection = self.__db[collection_name]
-            result = collection.insert_one(data) if not many and isinstance(data, dict) else collection.insert_many(data)
-            self.__logger.info(f"Data inserted successfully to: {collection_name}")
-            return result.acknowledged
+            file_data = self.__fs.find_one({'files_id': file_id})
+            if file_data:
+                self.__logger.info(f"Successfully load file {file_id}")
+            else:
+                self.__logger.info(f"File id {file_id} not found")
+            return file_data
         except Exception as e:
-            self.__logger.error(f"Failed to insert data: {e}")
-            raise e
+            self.__logger.error(f"Failed to retrieve file {file_id}: {e}")
+            raise
+
+    def delete_file(self, file_id: str):
+        """
+        Delete a file from the MongoDB database based on file id.
+        """
+        try:
+            self.__fs.delete(file_id)
+            self.__logger.info(f"File with file_id: {file_id} has been deleted")
+        except Exception as e:
+            self.__logger.error(f"Failed to delete file with file_id {file_id} : {e}")
+            raise
+
+
+    
+
 
     
