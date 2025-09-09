@@ -4,10 +4,15 @@ BOOTSTRAP_SERVER = os.getenv("BOOTSTRAP_SERVER", "localhost:9092")
 
 KAFKA_META_TOPIC = os.getenv("KAFKA_META_TOPIC", "metadata")
 KAFKA_AUDIO_TOPIC = os.getenv("KAFKA_AUDIO_TOPIC", "audio")
+KAFKA_ENRICHER_TOPIC = os.getenv("KAFKA_ENRICHER_TOPIC", "enricher")
+
 KAFKA_META_KEY = os.getenv("KAFKA_META_KEY", "metaretriever")
-KAFKA_META_GROUP_ID = os.getenv("KAFKA_META_GROUP_ID", "metapersister")
 KAFKA_AUDIO_KEY = os.getenv("KAFKA_META_KEY", "audioretriever")
+KAFKA_ENRICHER_KEY = os.getenv("KAFKA_ENRICHER_KEY", "enricher")
+
+KAFKA_META_GROUP_ID = os.getenv("KAFKA_META_GROUP_ID", "metapersister")
 KAFKA_AUDIO_GROUP_ID = os.getenv("KAFKA_META_GROUP_ID", "audiopersister")
+KAFKA_ENRICHER_GROUP_ID = os.getenv("KAFKA_ENRICHER_GROUP_ID", "enricher")
 
 
 DATA_PATH = "podcasts"
@@ -48,3 +53,10 @@ ES_MAPPING = {
         "Text" : {"type": "text"}
     }
 }
+
+
+HOSTILE_BLACKLIST = "R2Vub2NpZGUsV2FyIENyaW1lcyxBcGFydGhlaWQsTWFzc2FjcmUsTmFrYmEsRGlzcGxhY2VtZW50LEh1bWFuaXRhcmlhbiBDcmlzaXMsQmxvY2thZGUsT2NjdXBhdGlvbixSZWZ1Z2VlcyxJQ0MsQkRT"
+
+
+
+NOT_HOSTILE_BLACKLIST = "RnJlZWRvbSBGbG90aWxsYSxSZXNpc3RhbmNlLExpYmVyYXRpb24sRnJlZSBQYWxlc3RpbmUsR2F6YSxDZWFzZWZpcmUsUHJvdGVzdCxVTlJXQQ=="
