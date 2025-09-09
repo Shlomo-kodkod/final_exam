@@ -13,24 +13,12 @@ class FetcherManager:
         except Exception as e:
             self.__logger.error("Failed to initialize FetcherManager")
 
-    def publish_data(self, data: list[dict], topic: str, key: str):
-        """
-        Publish data to appropriate Kafka topics.
-        """
-        try:
-            for record in data:
-                self.__producer.produce(topic, key,  record)
-                self.__logger.info(f"Published data to Kafka to topic {topic}")
-                self.__producer.flush()
-        except Exception as e:
-            self.__logger.error(f"Failed to publish data to topic {topic}: {e}")
-
     def main(self):
         """
         Start extracting files metadata and publish them to kafka.
         """
         data = self.__fetcher.create_file_records(config.DATA_PATH)
-        self.publish_data(data, config.KAFKA_TOPIC, config.KAFKA_KEY)
+        self.__producer.publish_data(data, config.KAFKA_META_TOPIC, config.KAFKA_META_KEY)
 
 
 

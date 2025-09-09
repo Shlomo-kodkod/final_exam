@@ -1,4 +1,5 @@
 from pymongo import MongoClient
+from bson.objectid import ObjectId
 import gridfs
 from services.utils.utils import Logger
 
@@ -41,18 +42,19 @@ class Mongo:
         Insert a file into the mongodb with id.
         """
         try: 
-            id = self.__fs.put(data=file_data, _id= file_id)
+            id = ObjectId(file_id)
+            id = self.__fs.put(file_data, _id= id)
             self.__logger.info(f"File inserted successfully with file_id: {file_id}")
         except Exception as e:
             self.__logger.error(f"Failed to insert file {id}: {file_id}")
-            raise
+            raise e
 
     def find_file(self, file_id: str) -> bytes | None:
         """
         Read a file from the MongoDB database based on file id.
         """
         try:
-            file_data = self.__fs.find_one({'_id': file_id})
+            file_data = self.__fs.find_one({'_id': ObjectId(file_id)})
             if file_data:
                 self.__logger.info(f"Successfully load file {file_id}")
             else:
@@ -60,18 +62,18 @@ class Mongo:
             return file_data
         except Exception as e:
             self.__logger.error(f"Failed to retrieve file {file_id}: {e}")
-            raise
+            raise e
 
     def delete_file(self, file_id: str):
         """
         Delete a file from the MongoDB database based on file id.
         """
         try:
-            self.__fs.delete(file_id)
+            self.__fs.delete(ObjectId(file_id))
             self.__logger.info(f"File with file_id: {file_id} has been deleted")
         except Exception as e:
             self.__logger.error(f"Failed to delete file with file_id {file_id} : {e}")
-            raise
+            raise e
 
 
     
