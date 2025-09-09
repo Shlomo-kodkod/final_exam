@@ -14,8 +14,8 @@ class PersisterManager:
         self.__mongo = Mongo(config.MONGO_URI)
         self.__persister = Persister()
         try: 
-            topics = [config.KAFKA_TOPIC]
-            self.__consumer = KafkaConsumer(config.BOOTSTRAP_SERVER, config.KAFKA_GROUP_ID, topics)
+            topics = [config.KAFKA_META_TOPIC]
+            self.__consumer = KafkaConsumer(config.BOOTSTRAP_SERVER, config.KAFKA_META_GROUP_ID, topics)
             self.__elastic.connect()
             self.__elastic.create_index(config.ES_INDEX, config.ES_MAPPING)
             self.__mongo.connect(config.MONGO_INITDB_DATABASE)

@@ -2,9 +2,13 @@ import os
 
 BOOTSTRAP_SERVER = os.getenv("BOOTSTRAP_SERVER", "localhost:9092")
 
-KAFKA_TOPIC = os.getenv("KAFKA_TOPIC", "metadata")
-KAFKA_KEY = os.getenv("KAFKA_KEY", "retriever")
-KAFKA_GROUP_ID = os.getenv("KAFKA_GROUP_ID", "persister")
+KAFKA_META_TOPIC = os.getenv("KAFKA_META_TOPIC", "metadata")
+KAFKA_AUDIO_TOPIC = os.getenv("KAFKA_AUDIO_TOPIC", "audio")
+KAFKA_META_KEY = os.getenv("KAFKA_META_KEY", "metaretriever")
+KAFKA_META_GROUP_ID = os.getenv("KAFKA_META_GROUP_ID", "metapersister")
+KAFKA_AUDIO_KEY = os.getenv("KAFKA_META_KEY", "audioretriever")
+KAFKA_AUDIO_GROUP_ID = os.getenv("KAFKA_META_GROUP_ID", "audiopersister")
+
 
 DATA_PATH = "podcasts"
 

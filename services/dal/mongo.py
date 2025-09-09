@@ -42,7 +42,8 @@ class Mongo:
         Insert a file into the mongodb with id.
         """
         try: 
-            id = self.__fs.put(data=file_data, _id= ObjectId(file_id))
+            id = ObjectId(file_id)
+            id = self.__fs.put(file_data, _id= id)
             self.__logger.info(f"File inserted successfully with file_id: {file_id}")
         except Exception as e:
             self.__logger.error(f"Failed to insert file {id}: {file_id}")

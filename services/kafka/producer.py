@@ -43,3 +43,18 @@ class KafkaProducer:
         self.__logger.info("Flushing producer")
         self.__producer.flush(timeout)
         self.__logger.info("Producer flush complete")
+
+    def publish_data(self, data: list[dict], topic: str, key: str):
+        """
+        Publish data to appropriate Kafka topics.
+        """
+        try:
+            for record in data:
+                json_value = json.dumps(record).encode('utf-8')
+                self.__producer.produce(topic, key=key.encode('utf-8') if key else None, value=json_value, callback=self.delivery_report)
+                self.__logger.info(f"Published data to Kafka to topic {topic}")
+                self.__producer.flush()
+        except Exception as e:
+            self.__logger.error(f"Failed to publish data to topic {topic}: {e}")
+
+        
