@@ -58,4 +58,14 @@ class Elastic:
             self.__logger.error(f"Failed to search in {index_name}: {e}")
             raise e
 
+    def update_documents(self, index_name: str, id:str, data: dict):
+        """
+        Updates existing document in elasticsearch.
+        """
+        try:
+            self.__connection.update(index=index_name, id=id, doc=data)
+            self.__logger.info(f"Successfully update document {id}")
+        except Exception as e:
+            self.__logger.error(f"Failed to update document {id}: {e}")
+            raise e
 
