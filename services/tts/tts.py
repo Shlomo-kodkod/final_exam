@@ -1,6 +1,5 @@
 from faster_whisper import WhisperModel
 import io
-import logging
 from services.utils.utils import Logger
 
 

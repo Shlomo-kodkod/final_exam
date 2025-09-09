@@ -61,10 +61,4 @@ class TtsManager:
         except Exception as e:
             self.__logger.error(f"Failed to consume messages: {e} ")
         
-            
-a = TtsManager()
-a.main()
-
-
-
-
+  
