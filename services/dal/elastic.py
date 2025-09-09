@@ -39,7 +39,7 @@ class Elastic:
         """
         try:
             self.__connection.index(index=index_name, id=file_id, document=data)
-            self.__logger.info(f"Successfully indexed document in {index_name}")
+            self.__logger.info(f"Successfully indexed document in {index_name} with id: {file_id}")
         except Exception as e:
             self.__logger.error(f"Failed to index data in {index_name}: {e}")
             raise e
@@ -68,4 +68,5 @@ class Elastic:
         except Exception as e:
             self.__logger.error(f"Failed to update document {id}: {e}")
             raise e
+        
 
