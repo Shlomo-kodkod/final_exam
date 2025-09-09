@@ -2,7 +2,7 @@ from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo
 from services.kafka.consumer import KafkaConsumer
 from services.kafka.producer import KafkaProducer
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 from services.persister.persister import Persister
 from services import config
 

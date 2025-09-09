@@ -1,4 +1,4 @@
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 from services.tts.tts import Tts
 from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo

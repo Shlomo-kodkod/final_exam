@@ -1,7 +1,7 @@
 from pymongo import MongoClient
 from bson.objectid import ObjectId
 import gridfs
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 
 class Mongo:
     def __init__(self, uri):

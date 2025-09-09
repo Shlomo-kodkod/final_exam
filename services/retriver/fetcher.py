@@ -1,7 +1,7 @@
 from pathlib import Path
 import os.path
 from datetime import datetime
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 
 class Fetcher:
     def __init__(self):

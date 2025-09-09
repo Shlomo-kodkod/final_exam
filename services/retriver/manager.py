@@ -1,6 +1,6 @@
 from services.kafka.producer import KafkaProducer
 from services.retriver.fetcher import Fetcher
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 from services import config
 
 class FetcherManager:
