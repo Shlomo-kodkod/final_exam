@@ -30,8 +30,8 @@ class KafkaProducer:
         try:
             json_value = json.dumps(value).encode('utf-8')
             self.__producer.produce(topic, key=key.encode('utf-8') if key else None, value=json_value, callback=self.delivery_report)
-            self.__producer.poll(0) 
-            self.__logger.info(f"Produce message to topic {topic}, key={key}")
+            self.__producer.flush() 
+            self.__logger.info(f"Produce message to topic {topic}")
         except Exception as e:
             self.__logger.error(f"Error on produce: {e}")
             raise

@@ -2,7 +2,7 @@ from services.utils.utils import Logger
 from services.tts.tts import Tts
 from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo
-from services.kafka.producer import KafkaProducer
+from services.kafka.consumer import KafkaConsumer
 from services import config
 
 class TtsManager:
@@ -11,54 +11,59 @@ class TtsManager:
         self.__transcriber = Tts()
         self.__elastic = Elastic(config.ES_URI)
         self.__mongo = Mongo(config.MONGO_URI)
-        self.__producer = KafkaProducer(config.BOOTSTRAP_SERVER)
         try: 
+            topics = [config.KAFKA_AUDIO_TOPIC]
+            self.__consumer = KafkaConsumer(config.BOOTSTRAP_SERVER, config.KAFKA_AUDIO_GROUP_ID, topics)
             self.__elastic.connect()
             self.__mongo.connect(config.MONGO_INITDB_DATABASE)
             self.__logger.info("TtsManager successfully initialized")
         except Exception as e:
             self.__logger.error(f"Failed to initialize TtsManager: {e}")
 
-    def load_elastic_ids(self, index_name: str, id_label: str = 'File ID') -> list:
-        """
-        """
-        try:
-            result = self.__elastic.search(index_name)
-            ids = [doc.get(id_label, "") for doc in result]
-            self.__logger.info(f"Successfully load elastic data from {index_name}")
-            return ids
-        except Exception as e:
-            self.__logger.error(f"Failed to load elastic data from {index_name}: {e}")
-            raise e
         
-    def retrieve_audio(self, file_id:str):
+    def transcribe_by_id(self, file_id:str):
         """
+        Retrieve audio data from mongo by id and transcribe the audio. 
         """
         try:
             audio_file = self.__mongo.find_file(file_id)
-            self.__logger.info(f"Successfully load audio data with id {file_id}")
             audio_data = audio_file.read()
-            return audio_data
+            result = self.__transcriber.transcribe(audio_data)
+            self.__logger.info(f"Successfully transcribe audio data with id {file_id}")
+            return result
         except Exception as e:
-            self.__logger.error(f"Failed to load load audio data with id {file_id}: {e}")
+            self.__logger.error(f"Failed to transcribe audio data with id {file_id}: {e}")
             raise e
+
+    def update_metadata(self, data: dict, filed: str = "id"):
+        """
+        Update file metadata in elastic with audio data. 
+        """
+        try:
+            
+            id = data[filed]
+            text = self.transcribe_by_id(id)
+            data = {"Text": text}
+            self.__elastic.update_documents(config.ES_INDEX, id, data)
+            self.__logger.info(f"Successfully update metadata in file id {id}")
+        except Exception as e:
+            self.__logger.error(f"Failed to update metadata in file id {id}: {e}")
+            raise e
+
 
 
     def main(self):
         """
-        Start transcribe files data and publish them to kafka.
+        Start transcribe files data and update metadata in elastic.
         """
-        ids = self.load_elastic_ids(config.ES_INDEX)
-        for id in ids:
-            try:
-                audio_bytes = self.retrieve_audio(id)
-                data = {"ID": id, "Audio": self.__transcriber.transcribe(audio_bytes)}
-                self.__producer.produce(topic=config.KAFKA_AUDIO_TOPIC, key=config.KAFKA_AUDIO_KEY, value=data)
-                self.__producer.flush()
-                self.__logger.info(f"Successfully publish audio data with id {id}")
-            except Exception as e:
-                self.__logger.error(f"Failed to publish audio data with id {id}: {e}")
-                continue
+        try:
+            self.__consumer.consume_messages(self.update_metadata)
+        except Exception as e:
+            self.__logger.error(f"Failed to consume messages: {e} ")
+        
+            
+a = TtsManager()
+a.main()
 
 
 
