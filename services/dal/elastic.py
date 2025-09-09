@@ -45,15 +45,17 @@ class Elastic:
             raise e
         
         
-    def search(self, index_name: str, query: dict, hits: bool = True) -> list:
+    def search(self, index_name: str, query: dict = {"query": {"match_all": {}}}, score: bool = True) -> list:
         """
         Searches for documents in elasticsearch index.
         """
         try:
-            result = self.__connection.search(index=index_name, query=query)
+            result = helpers.scan(client=self.__connection, index=index_name, query=query)
+            docs = [document["_source"] for document in result] if score else [document for document in result]
             self.__logger.info(f"Successfully search in {index_name}")
-            return result['hits']['hits'] if hits else result
+            return docs 
         except Exception as e:
             self.__logger.error(f"Failed to search in {index_name}: {e}")
             raise e
+
 

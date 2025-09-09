@@ -29,7 +29,7 @@ class PersisterManager:
         Indexing file metadata in elastic.
         """
         try:
-            # metadata["File ID"] = file_id
+            metadata["File ID"] = file_id
             self.__elastic.index(config.ES_INDEX, file_id, metadata)
 
             self.__logger.info("Successfully index data to elastic")
