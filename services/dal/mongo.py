@@ -41,7 +41,7 @@ class Mongo:
         Insert a file into the mongodb with id.
         """
         try: 
-            id = self.__fs.put(data=file_data, files_id= file_id)
+            id = self.__fs.put(data=file_data, _id= file_id)
             self.__logger.info(f"File inserted successfully with file_id: {file_id}")
         except Exception as e:
             self.__logger.error(f"Failed to insert file {id}: {file_id}")
@@ -52,7 +52,7 @@ class Mongo:
         Read a file from the MongoDB database based on file id.
         """
         try:
-            file_data = self.__fs.find_one({'files_id': file_id})
+            file_data = self.__fs.find_one({'_id': file_id})
             if file_data:
                 self.__logger.info(f"Successfully load file {file_id}")
             else:

@@ -32,6 +32,7 @@ class Fetcher:
         attrs = {
             'File Path': abs_path, 
             'File Name': Path(file_path).name,
+            'Suffix':Path(file_path).suffix,
             'Size (KB)': self.size_format(stats.st_size),
             'Creation Date': self.time_convert(stats.st_birthtime),
             'Modified Date': self.time_convert(stats.st_mtime),

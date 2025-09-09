@@ -1,3 +1,4 @@
+from bson.objectid import ObjectId
 from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo
 from services.kafka.consumer import KafkaConsumer
@@ -29,7 +30,7 @@ class PersisterManager:
         """
         try:
             metadata["File ID"] = file_id
-            self.__elastic.index(config.ES_INDEX, metadata)
+            self.__elastic.index(config.ES_INDEX, file_id, metadata)
 
             self.__logger.info("Successfully index data to elastic")
         except Exception as e:
@@ -43,7 +44,7 @@ class PersisterManager:
             file_data = self.__persister.convert_audio_to_bin(message[path_filed])  
             uid = self.__persister.create_file_uid(file_data)
             self.index_metadata(message, uid)
-            self.__mongo.insert_file(uid, file_data)
+            self.__mongo.insert_file(ObjectId(uid), file_data)
             self.__logger.info(f"Successfully processed message with id: {uid}")
         except Exception as e:
             self.__logger.error(f"Failed to process message: {e}")

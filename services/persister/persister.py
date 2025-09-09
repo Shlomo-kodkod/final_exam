@@ -9,9 +9,9 @@ class Persister:
     def create_file_uid(self, file_bytes: bytes) -> str:
         "Create unique id based on file data with hash"
         try:
-            uid = hashlib.sha256(file_bytes).hexdigest()
+            uid = hashlib.md5(file_bytes).hexdigest()
             self.__logger.info("Successfully create file unique id")
-            return uid
+            return uid[:24]
         except Exception as e:
             self.__logger.error(f"Failed to create file id: {e}")
             raise
