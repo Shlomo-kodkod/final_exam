@@ -1,6 +1,6 @@
 from faster_whisper import WhisperModel
 import io
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 
 
 class Tts:

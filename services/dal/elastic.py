@@ -1,5 +1,5 @@
 from elasticsearch import Elasticsearch , helpers
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 from services import config
 
 class Elastic:

@@ -1,5 +1,5 @@
 import hashlib
-from services.utils.utils import Logger
+from services.utils.logger import Logger
 
 class Persister:
     def __init__(self):
