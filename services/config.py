@@ -26,6 +26,7 @@ ES_MAPPING = {
     "properties": {
         "File ID" : {"type": "keyword"},
         "File Path": {"type": "keyword"},
+        'Suffix': {"type": "keyword"},
         "File Name": {"type": "keyword"},
         "Size (KB)": {"type": "float"},
         "Creation Date": {
@@ -33,12 +34,13 @@ ES_MAPPING = {
             "format": "yyyy-MM-dd"
                           },
         "Modified Date": {
-            "type": "text",
+            "type": "date",
              "format": "yyyy-MM-dd"
             },
         "Last Access Date": {
-            "type": "text",
+            "type": "date",
              "format": "yyyy-MM-dd"
-            }
+            },
+        "Text" : {"type": "text"}
     }
 }

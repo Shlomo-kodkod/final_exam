@@ -33,12 +33,12 @@ class Elastic:
             self.__logger.warning(f"Index {index_name} already exists")
             
         
-    def index(self, index_name: str, data: dict):
+    def index(self, index_name: str, file_id: str, data: dict):
         """
         Indexing documents into elasticsearch.
         """
         try:
-            self.__connection.index(index=index_name, body=data)
+            self.__connection.index(index=index_name, id=file_id, document=data)
             self.__logger.info(f"Successfully indexed document in {index_name}")
         except Exception as e:
             self.__logger.error(f"Failed to index data in {index_name}: {e}")
