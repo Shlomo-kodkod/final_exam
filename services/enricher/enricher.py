@@ -34,6 +34,7 @@ class Enricher:
         for word in blacklist:
             score += self.find_sum_all(word, text)
         result = (score / total_words) * 100 if total_words > 0 else 0
+        self.__logger.info("Text classification has been successful")
         return result
         
 
