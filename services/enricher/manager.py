@@ -7,7 +7,7 @@ from services import config
 
 
 class EnricherManager:
-    def __init__(self, threshold: float = 50.0):
+    def __init__(self, threshold: float = 10.0):
         self.__logger = Logger.get_logger("EnricherManager")
         self.__threshold = threshold
         self.__enricher = Enricher()
@@ -63,8 +63,8 @@ class EnricherManager:
         """
         try:
             score = self.risk_calculation(text)
-            if score <= 30: return "None"
-            elif score >= 60: return "High"
+            if score <= 5: return "None"
+            elif score >= self.__threshold: return "High"
             else: return "Medium"
         except Exception as e:
             raise e

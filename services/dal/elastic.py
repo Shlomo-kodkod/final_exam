@@ -1,6 +1,5 @@
-from elasticsearch import Elasticsearch , helpers
+from elasticsearch import Elasticsearch 
 from services.utils.logger import Logger
-from services import config
 
 class Elastic:
     def __init__(self, uri):

@@ -5,10 +5,11 @@ WORKDIR /app
 COPY services/persister/requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
+COPY  podcasts ./podcasts
 COPY services/persister ./services/persister
 COPY services/kafka ./services/kafka
 COPY services/dal ./services/dal
-COPY services/utils/logger.py ./services/utils/logger.py
+COPY services/utils ./services/utils
 COPY services/config.py ./services/config.py
 
 CMD ["python", "-m", "services.persister.main"]

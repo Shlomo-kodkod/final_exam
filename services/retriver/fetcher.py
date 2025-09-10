@@ -27,6 +27,7 @@ class Fetcher:
         """
         Return file metadata.
         """
+        
         stats = os.stat(file_path)
         abs_path = os.path.abspath(file_path)
         attrs = {
@@ -34,7 +35,7 @@ class Fetcher:
             'File Name': Path(file_path).name,
             'Suffix':Path(file_path).suffix,
             'Size (KB)': self.size_format(stats.st_size),
-            'Creation Date': self.time_convert(stats.st_birthtime),
+            'Creation Date': getattr(stats, 'st_birthtime', stats.st_ctime),
             'Modified Date': self.time_convert(stats.st_mtime),
             'Last Access Date': self.time_convert(stats.st_atime)}
         return attrs

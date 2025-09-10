@@ -17,7 +17,7 @@ KAFKA_ENRICHER_GROUP_ID = os.getenv("KAFKA_ENRICHER_GROUP_ID", "enricher")
 
 DATA_PATH = "podcasts"
 
-ES_HOST = os.getenv("ES_HOST", "localhost")
+ES_HOST = os.getenv("ES_HOST", "elasticsearch")
 ES_PORT = os.getenv("ES_PORT", 9200)
 ES_INDEX = os.getenv("ES_INDEX", "podcast_metadata")
 ES_LOG_INDEX = os.getenv("ES_LOG_INDEX", "logger")
