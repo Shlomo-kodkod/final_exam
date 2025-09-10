@@ -6,7 +6,7 @@ from services import config
 
 
 class EnricherManager:
-    def __init__(self, threshold: float = 10.0):
+    def __init__(self, threshold: float = 50.0):
         self.__logger = Logger.get_logger("EnricherManager")
         self.__threshold = threshold
         self.__enricher = Enricher()
@@ -45,6 +45,34 @@ class EnricherManager:
         except Exception as e:
             self.__logger.error(f"Failed to calculate dangerous percentage: {e}")
             return None
+        
+    def is_risk(self, text: str) -> bool | None:
+        """
+        Check if risk percentage is over the threshold.
+        """
+        score = self.risk_calculation(text)
+        if score is not None:
+            return score >= self.__threshold
+        else: 
+            return None
+        
+    def risk_level(self, text: str) -> str | None:
+        """
+        Calculates the risk level.
+        """
+        score = self.risk_calculation(text)
+        if score is not None:
+            if score <= 30: return "None"
+            elif score >= 60: return "High"
+            else: return "Medium"
+        else: 
+            return None
+
+
+        
+    
+        
+    
         
 
 
