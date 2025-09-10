@@ -72,6 +72,7 @@ class EnricherManager:
         
     def analyze_text(self, text):
         """
+        Analyze text dangers level.
         """
         try:
             new_data = dict()
@@ -84,6 +85,7 @@ class EnricherManager:
         
     def get_text_by_id(self, file_id: str, text_label: str = "Text") -> str:
         """
+        Return metadata text by id fom elastic.
         """
         try:
             document = self.__elastic.search(config.ES_INDEX, file_id)
@@ -99,7 +101,6 @@ class EnricherManager:
         Update file metadata in elastic with new data. 
         """
         try:
-            print(data)
             file_id = data[field]
             text = self.get_text_by_id(file_id)
             clean_text = self.__enricher.remove_punctuation(text)
