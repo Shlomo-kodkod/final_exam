@@ -1,6 +1,5 @@
-from elasticsearch import Elasticsearch , helpers
+from elasticsearch import Elasticsearch 
 from services.utils.logger import Logger
-from services import config
 
 class Elastic:
     def __init__(self, uri):
@@ -38,35 +37,39 @@ class Elastic:
         Indexing documents into elasticsearch.
         """
         try:
-            self.__connection.index(index=index_name, id=file_id, document=data)
+            self.__connection.index(index=index_name, id=file_id, document=data,  refresh=True)
             self.__logger.info(f"Successfully indexed document in {index_name} with id: {file_id}")
         except Exception as e:
             self.__logger.error(f"Failed to index data in {index_name}: {e}")
             raise e
         
         
-    def search(self, index_name: str, query: dict = {"query": {"match_all": {}}}, score: bool = True) -> list:
+    def search(self, index_name: str, file_id: str) -> list:
         """
         Searches for documents in elasticsearch index.
         """
         try:
-            result = helpers.scan(client=self.__connection, index=index_name, query=query)
-            docs = [document["_source"] for document in result] if score else [document for document in result]
-            self.__logger.info(f"Successfully search in {index_name}")
-            return docs 
+            result = self.__connection.get(index=index_name, id=file_id, refresh=True)
+            if result['found']:
+                doc = result['_source']
+                self.__logger.info(f"Document with ID: {file_id} found in index: {index_name}")
+                return doc 
+            else:
+                self.__logger.info(f"Document with ID: {file_id} not found in index: {index_name}")
+                raise Exception(f"Document with ID: {file_id} not found in index: {index_name}")
         except Exception as e:
             self.__logger.error(f"Failed to search in {index_name}: {e}")
             raise e
+        
 
     def update_documents(self, index_name: str, id:str, data: dict):
         """
         Updates existing document in elasticsearch.
         """
         try:
-            self.__connection.update(index=index_name, id=id, doc=data)
+            self.__connection.update(index=index_name, id=id, doc=data,  refresh=True)
             self.__logger.info(f"Successfully update document {id}")
         except Exception as e:
             self.__logger.error(f"Failed to update document {id}: {e}")
             raise e
-        
-
+   

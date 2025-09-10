@@ -3,6 +3,7 @@ from services.tts.tts import Tts
 from services.dal.elastic import Elastic
 from services.dal.mongo import Mongo
 from services.kafka.consumer import KafkaConsumer
+from services.kafka.producer import KafkaProducer
 from services import config
 
 class TtsManager:
@@ -14,6 +15,7 @@ class TtsManager:
         try: 
             topics = [config.KAFKA_AUDIO_TOPIC]
             self.__consumer = KafkaConsumer(config.BOOTSTRAP_SERVER, config.KAFKA_AUDIO_GROUP_ID, topics)
+            self.__producer = KafkaProducer(config.BOOTSTRAP_SERVER)
             self.__elastic.connect()
             self.__mongo.connect(config.MONGO_INITDB_DATABASE)
             self.__logger.info("TtsManager successfully initialized")
@@ -37,14 +39,16 @@ class TtsManager:
 
     def update_metadata(self, data: dict, filed: str = "id"):
         """
-        Update file metadata in elastic with audio data. 
+        Update file metadata in elastic with audio data and send to kafka the id. 
         """
         try:
             
             id = data[filed]
             text = self.transcribe_by_id(id)
             data = {"Text": text}
+            id_data = {"id": id}
             self.__elastic.update_documents(config.ES_INDEX, id, data)
+            self.__producer.produce(config.KAFKA_ENRICHER_TOPIC, config.KAFKA_ENRICHER_KEY, id_data)
             self.__logger.info(f"Successfully update metadata in file id {id}")
         except Exception as e:
             self.__logger.error(f"Failed to update metadata in file id {id}: {e}")
