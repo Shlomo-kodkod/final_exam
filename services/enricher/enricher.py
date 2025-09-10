@@ -1,3 +1,4 @@
+import re
 from services.utils.logger import Logger
 
 
@@ -8,28 +9,32 @@ class Enricher:
         self.__logger = Logger.get_logger("Enricher")
 
 
-    def split_text_to_word(self, text: str, split_by: str = " ") -> list:
+    def split_text_to_word(self, text: str, split_by: str = ",") -> list:
         """
         Split string to list of words.
         """
         return text.lower().split()  
-
-
-    def analyze_sentiment(self, text: str, hostile_blacklist: list, not_hostile_blacklist: list):
+    
+    def find_sum_all(self, word: str, text: str) -> int:
         """
+        Returns the amount of instances of a word in a text.
         """
-        sentiment_score = 0
-        found_words = 0
+        expression = fr"\b{word}\b"
+        match = re.findall(expression, text, flags=re.IGNORECASE)
+        return len(match)
 
-        for word in text:
-            if word in hostile_blacklist:
-                sentiment_score += 2
-                found_words += 1
-            if word in not_hostile_blacklist:
-                sentiment_score += 1
-                found_words += 1
 
-        if found_words > 0:
-            return sentiment_score / found_words  
-        else:
-            return 0  
+    def text_classification(self, text: str, blacklist: list):
+        """
+        Returns the content classification percentage by a given word list.
+        """
+        total_words = len(text.split())
+        score = 0
+
+        for word in blacklist:
+            score += self.find_sum_all(word, text)
+        result = (score / total_words) * 100 if total_words > 0 else 0
+        return result
+        
+
+
